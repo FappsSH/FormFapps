@@ -38,7 +38,6 @@
             position: relative;
         }
 
-        /* Background Animation */
         body::before {
             content: '';
             position: fixed;
@@ -60,7 +59,6 @@
             50% { opacity: 1; }
         }
 
-        /* Progress Bar */
         .progress-container {
             position: fixed;
             top: 0;
@@ -92,7 +90,6 @@
             letter-spacing: 1px;
         }
 
-        /* Container */
         .container {
             position: relative;
             z-index: 1;
@@ -105,7 +102,6 @@
             justify-content: center;
         }
 
-        /* Logo/Brand */
         .brand {
             text-align: center;
             margin-bottom: 60px;
@@ -131,7 +127,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* Question Container */
         .question-container {
             opacity: 0;
             transform: translateY(30px);
@@ -185,7 +180,6 @@
             color: var(--text-primary);
         }
 
-        /* Options */
         .options {
             display: flex;
             flex-direction: column;
@@ -285,7 +279,6 @@
             box-shadow: 0 0 20px var(--accent-glow);
         }
 
-        /* Navigation Buttons */
         .navigation {
             margin-top: 60px;
             display: flex;
@@ -359,7 +352,6 @@
             margin-left: auto;
         }
 
-        /* Results Page */
         .results-container {
             opacity: 0;
             transform: translateY(30px);
@@ -369,7 +361,7 @@
 
         .results-header {
             text-align: center;
-            margin-bottom: 60px;
+            margin-bottom: 50px;
         }
 
         .results-header h2 {
@@ -379,7 +371,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .results-header p {
@@ -389,8 +381,8 @@
 
         .score-display {
             text-align: center;
-            margin-bottom: 60px;
-            padding: 40px;
+            margin-bottom: 50px;
+            padding: 50px 40px;
             background: var(--card-bg);
             border: 2px solid var(--card-border);
             border-radius: 20px;
@@ -398,13 +390,14 @@
         }
 
         .score-number {
-            font-size: 72px;
+            font-size: 84px;
             font-weight: 700;
             background: linear-gradient(135deg, var(--accent), var(--neon-blue));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            line-height: 1;
         }
 
         .score-label {
@@ -412,11 +405,18 @@
             color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 2px;
+            margin-bottom: 10px;
         }
 
-        /* Chart Section */
+        .score-classification {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-top: 15px;
+        }
+
         .chart-section {
-            margin-bottom: 60px;
+            margin-bottom: 50px;
             padding: 40px;
             background: var(--card-bg);
             border: 2px solid var(--card-border);
@@ -425,7 +425,7 @@
         }
 
         .chart-section h3 {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 600;
             color: var(--accent);
             margin-bottom: 30px;
@@ -438,57 +438,65 @@
             max-height: 400px;
         }
 
-        /* Diagnosis Section */
-        .diagnosis-section {
-            margin-bottom: 60px;
-            padding: 40px;
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 50px;
+        }
+
+        .insight-card {
+            padding: 30px;
             background: var(--card-bg);
             border: 2px solid var(--card-border);
-            border-radius: 20px;
+            border-radius: 16px;
             backdrop-filter: blur(10px);
-        }
-
-        .diagnosis-section h3 {
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--accent);
-            margin-bottom: 30px;
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .diagnosis-item {
-            padding: 20px;
-            margin-bottom: 16px;
-            background: rgba(0, 0, 0, 0.3);
-            border-left: 4px solid var(--accent);
-            border-radius: 8px;
-            font-size: 16px;
-            line-height: 1.6;
-            color: var(--text-primary);
             animation: fadeInUp 0.6s ease-out forwards;
-            animation-delay: calc(var(--item-index) * 0.1s);
             opacity: 0;
         }
 
-        .diagnosis-item.critical {
-            border-left-color: var(--critical);
+        .insight-card:nth-child(1) { animation-delay: 0.1s; }
+        .insight-card:nth-child(2) { animation-delay: 0.2s; }
+        .insight-card:nth-child(3) { animation-delay: 0.3s; }
+
+        .insight-card.priority {
+            border-color: var(--critical);
         }
 
-        .diagnosis-item.warning {
-            border-left-color: var(--warning);
+        .insight-card.second {
+            border-color: var(--warning);
         }
 
-        .diagnosis-item.good {
-            border-left-color: var(--good);
+        .insight-card.stable {
+            border-color: var(--good);
         }
 
-        .diagnosis-item.advanced {
-            border-left-color: var(--accent);
+        .insight-title {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 15px;
         }
 
-        /* CTA Section */
+        .insight-card.priority .insight-title {
+            color: var(--critical);
+        }
+
+        .insight-card.second .insight-title {
+            color: var(--warning);
+        }
+
+        .insight-card.stable .insight-title {
+            color: var(--good);
+        }
+
+        .insight-content {
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--text-primary);
+        }
+
         .cta-section {
             padding: 40px;
             background: linear-gradient(135deg, rgba(60, 219, 192, 0.1), rgba(0, 212, 255, 0.1));
@@ -500,7 +508,7 @@
         }
 
         .cta-section h3 {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 700;
             color: var(--accent);
             margin-bottom: 20px;
@@ -510,18 +518,9 @@
         }
 
         .cta-content {
-            font-size: 18px;
+            font-size: 17px;
             line-height: 1.8;
             color: var(--text-primary);
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .cta-highlight {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--accent);
-            margin: 20px 0;
             text-align: center;
         }
 
@@ -548,7 +547,6 @@
             box-shadow: 0 15px 50px rgba(60, 219, 192, 0.5);
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .container {
                 padding: 60px 20px;
@@ -589,11 +587,15 @@
             }
 
             .score-number {
-                font-size: 56px;
+                font-size: 64px;
             }
 
-            .chart-section, .diagnosis-section, .cta-section {
+            .chart-section, .cta-section {
                 padding: 24px;
+            }
+
+            .insights-grid {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -603,20 +605,17 @@
     </style>
 </head>
 <body>
-    <!-- Progress Bar -->
     <div class="progress-container">
         <div class="progress-bar" id="progressBar"></div>
     </div>
     <div class="progress-text" id="progressText">0%</div>
 
     <div class="container">
-        <!-- Brand -->
         <div class="brand" id="brand">
             <h1>FAPPS</h1>
             <p>Diagnóstico Empresarial Inteligente</p>
         </div>
 
-        <!-- Question Container -->
         <div class="question-container" id="questionContainer">
             <div class="question-number" id="questionNumber">PERGUNTA 1 DE 22</div>
             <h2 class="question-text" id="questionText"></h2>
@@ -632,33 +631,28 @@
             </div>
         </div>
 
-        <!-- Results Container -->
         <div class="results-container hidden" id="resultsContainer">
             <div class="results-header">
                 <h2>Resultado do Diagnóstico</h2>
-                <p>Análise completa da maturidade da sua empresa</p>
+                <p>Mapa de necessidade de tecnologia na sua empresa</p>
             </div>
 
             <div class="score-display">
+                <div class="score-label">Índice Geral</div>
                 <div class="score-number" id="scoreNumber">0</div>
-                <div class="score-label">Pontuação Total (0-2200)</div>
+                <div class="score-classification" id="scoreClassification"></div>
             </div>
 
-            <!-- Chart Section -->
             <div class="chart-section">
-                <h3>📊 Maturidade por Área</h3>
+                <h3>📊 Necessidade de tecnologia por área (0 a 100)</h3>
                 <canvas id="areasChart"></canvas>
             </div>
 
-            <!-- Diagnosis Section -->
-            <div class="diagnosis-section">
-                <h3>📌 Mapa de Prioridade de Automação</h3>
-                <div id="diagnosisList"></div>
-            </div>
+            <div class="insights-grid" id="insightsGrid"></div>
 
-            <!-- CTA Section -->
-            <div class="cta-section" id="ctaSection">
-                <!-- Generated dynamically -->
+            <div class="cta-section">
+                <h3>🎯 Próximo Passo</h3>
+                <div class="cta-content" id="ctaContent"></div>
             </div>
 
             <button class="restart-btn" onclick="restartForm()">Reiniciar Diagnóstico</button>
@@ -666,7 +660,6 @@
     </div>
 
     <script>
-        // Area Mapping
         const areaMapping = {
             "Visão geral": [1, 2],
             "Operação": [3, 4, 5],
@@ -927,21 +920,18 @@
         let answers = {};
         const optionLetters = ['A', 'B', 'C', 'D', 'E'];
 
-        // Shuffle function
         function shuffleAlternatives(alts) {
             return [...alts].sort(() => Math.random() - 0.5);
         }
 
         function renderQuestion() {
             const question = questions[currentQuestion];
-
             document.getElementById('questionNumber').textContent = `PERGUNTA ${currentQuestion + 1} DE ${questions.length}`;
             document.getElementById('questionText').textContent = question.text;
 
             const optionsContainer = document.getElementById('options');
             optionsContainer.innerHTML = '';
 
-            // Shuffle options
             const shuffledOptions = shuffleAlternatives(question.options);
 
             shuffledOptions.forEach((option, index) => {
@@ -973,18 +963,13 @@
             const question = questions[currentQuestion];
             answers[question.id] = { text: optionText, score: score };
 
-            // Remove selected class from all options
             document.querySelectorAll('.option').forEach(opt => {
                 opt.classList.remove('selected');
             });
 
-            // Add selected class to clicked option
             event.currentTarget.classList.add('selected');
-
-            // Enable next button
             document.getElementById('nextBtn').disabled = false;
 
-            // Auto advance after a short delay
             setTimeout(() => {
                 if (currentQuestion < questions.length - 1) {
                     nextQuestion();
@@ -998,7 +983,6 @@
             }
 
             if (currentQuestion < questions.length - 1) {
-                // Fade out
                 const container = document.getElementById('questionContainer');
                 container.classList.add('fade-out');
 
@@ -1046,7 +1030,7 @@
         }
 
         function calculateAreaScores() {
-            const areaScores = {};
+            const areaNecessidade = {};
 
             Object.entries(areaMapping).forEach(([areaName, questionNumbers]) => {
                 let totalScore = 0;
@@ -1060,124 +1044,89 @@
                     }
                 });
 
-                // Calculate average (0-100)
-                areaScores[areaName] = count > 0 ? Math.round(totalScore / count) : 0;
+                const maturidade = count > 0 ? Math.round(totalScore / count) : 0;
+                areaNecessidade[areaName] = 100 - maturidade;
             });
 
-            return areaScores;
+            return areaNecessidade;
         }
 
-        function gerarDiagnosticoArea(nome, score) {
-            if (score < 30) {
-                return {
-                    text: `${nome}: nível CRÍTICO. Processos manuais estão drenando tempo e travando escala. Esta área deve ser a prioridade nº1 para automação.`,
-                    level: 'critical'
-                };
-            }
-            if (score < 60) {
-                return {
-                    text: `${nome}: nível INTERMEDIÁRIO. Existe organização, mas ainda depende de esforço manual. Automação aqui reduz retrabalho e riscos.`,
-                    level: 'warning'
-                };
-            }
-            if (score < 80) {
-                return {
-                    text: `${nome}: nível BOM. Funciona bem, mas ainda há espaço para ganhar eficiência e velocidade.`,
-                    level: 'good'
-                };
-            }
-            return {
-                text: `${nome}: nível AVANÇADO. Esta área já está preparada para escala.`,
-                level: 'advanced'
-            };
+        function classificarNecessidade(score) {
+            if (score < 20) return "Baixa necessidade de tecnologia";
+            if (score < 40) return "Necessidade moderada";
+            if (score < 70) return "Alta necessidade";
+            return "Necessidade crítica";
         }
 
         function showResults() {
-            // Calculate total score
-            let totalScore = 0;
-            questions.forEach(question => {
-                if (answers[question.id]) {
-                    totalScore += answers[question.id].score;
-                }
-            });
-
-            // Calculate area scores
             const areaScores = calculateAreaScores();
+            const valoresNecessidade = Object.values(areaScores);
+            const necessidadeGeral = Math.round(valoresNecessidade.reduce((acc, v) => acc + v, 0) / valoresNecessidade.length);
 
-            // Sort areas by score (worst to best)
-            const sortedAreas = Object.entries(areaScores).sort((a, b) => a[1] - b[1]);
+            const sortedAreas = Object.entries(areaScores).sort((a, b) => b[1] - a[1]);
+            const [areaMax, scoreMax] = sortedAreas[0];
+            const [areaSecond, scoreSecond] = sortedAreas[1];
+            const [areaMin, scoreMin] = sortedAreas[sortedAreas.length - 1];
 
-            // Hide question container
             document.getElementById('questionContainer').classList.add('hidden');
             document.getElementById('brand').classList.add('hidden');
 
-            // Show results container
             const resultsContainer = document.getElementById('resultsContainer');
             resultsContainer.classList.remove('hidden');
 
-            // Display total score
-            document.getElementById('scoreNumber').textContent = totalScore;
+            document.getElementById('scoreNumber').textContent = necessidadeGeral + '/100';
+            document.getElementById('scoreClassification').textContent = classificarNecessidade(necessidadeGeral);
 
-            // Create Chart
             createAreasChart(areaScores);
 
-            // Generate diagnosis
-            const diagnosisList = document.getElementById('diagnosisList');
-            diagnosisList.innerHTML = '';
-
-            sortedAreas.forEach(([areaName, score], index) => {
-                const diagnosis = gerarDiagnosticoArea(areaName, score);
-                const diagnosisDiv = document.createElement('div');
-                diagnosisDiv.className = `diagnosis-item ${diagnosis.level}`;
-                diagnosisDiv.style.setProperty('--item-index', index);
-                diagnosisDiv.textContent = `• ${diagnosis.text}`;
-                diagnosisList.appendChild(diagnosisDiv);
-            });
-
-            // Generate CTA
-            const [areaCritica, scoreCritico] = sortedAreas[0];
-            const ctaSection = document.getElementById('ctaSection');
-            ctaSection.innerHTML = `
-                <h3>🎯 Próximo Passo Recomendado</h3>
-                <div class="cta-highlight">Seu maior gargalo hoje é: ${areaCritica}</div>
-                <div class="cta-content">
-                    <p style="margin-bottom: 16px;">Maturidade atual: <strong>${scoreCritico}/100</strong></p>
-                    <p style="margin-bottom: 16px;">Essa é a área que mais está consumindo tempo, causando retrabalho e limitando o crescimento da sua empresa.</p>
-                    <p style="margin-bottom: 16px;">O próximo passo é criar um <strong>plano de automação específico</strong> para essa área, eliminando processos manuais e aumentando a previsibilidade operacional.</p>
-                    <p><strong>Recomendação:</strong> agende uma reunião estratégica para traçarmos esse plano imediatamente.</p>
+            const insightsGrid = document.getElementById('insightsGrid');
+            insightsGrid.innerHTML = `
+                <div class="insight-card priority">
+                    <div class="insight-title">🔴 Prioridade Máxima</div>
+                    <div class="insight-content">${areaMax} – é onde a dependência de processos manuais está mais alta hoje.</div>
+                </div>
+                <div class="insight-card second">
+                    <div class="insight-title">🟡 Segunda Prioridade</div>
+                    <div class="insight-content">${areaSecond} – também apresenta alta necessidade de tecnologia e automação.</div>
+                </div>
+                <div class="insight-card stable">
+                    <div class="insight-title">🟢 Área Mais Estável</div>
+                    <div class="insight-content">${areaMin} – hoje é a área com menor necessidade de tecnologia imediata.</div>
                 </div>
             `;
 
-            // Update progress to 100%
+            const ctaContent = document.getElementById('ctaContent');
+            ctaContent.innerHTML = `
+                Seu maior gargalo hoje está em <strong>${areaMax}</strong> (necessidade ${scoreMax}/100).
+                O próximo passo é desenhar um plano de automação focado nessa área para reduzir processos manuais e liberar crescimento.
+                <br><br><strong>Recomendação:</strong> agende uma reunião estratégica para montar esse plano com base no seu diagnóstico.
+            `;
+
             document.getElementById('progressBar').style.width = '100%';
             document.getElementById('progressText').textContent = '100%';
 
-            // Log JSON to console
-            console.log('Respostas em JSON:', JSON.stringify(answers, null, 2));
-            console.log('Scores por área:', areaScores);
-            console.log('Área crítica:', areaCritica, '- Score:', scoreCritico);
+            console.log('Necessidade por área:', areaScores);
+            console.log('Necessidade geral:', necessidadeGeral);
+            console.log('Classificação:', classificarNecessidade(necessidadeGeral));
         }
 
         function createAreasChart(areaScores) {
             const ctx = document.getElementById('areasChart').getContext('2d');
-
-            // Sort data for better visualization
-            const sortedData = Object.entries(areaScores).sort((a, b) => a[1] - b[1]);
+            const sortedData = Object.entries(areaScores).sort((a, b) => b[1] - a[1]);
             const labels = sortedData.map(([name]) => name);
             const data = sortedData.map(([, score]) => score);
 
-            // Create gradient colors based on score
             const backgroundColors = data.map(score => {
-                if (score < 30) return 'rgba(255, 51, 102, 0.8)'; // Critical
-                if (score < 60) return 'rgba(255, 184, 0, 0.8)'; // Warning
-                if (score < 80) return 'rgba(0, 255, 136, 0.8)'; // Good
-                return 'rgba(60, 219, 192, 0.8)'; // Advanced
+                if (score >= 70) return 'rgba(255, 51, 102, 0.8)';
+                if (score >= 40) return 'rgba(255, 184, 0, 0.8)';
+                if (score >= 20) return 'rgba(0, 255, 136, 0.8)';
+                return 'rgba(60, 219, 192, 0.8)';
             });
 
             const borderColors = data.map(score => {
-                if (score < 30) return 'rgba(255, 51, 102, 1)';
-                if (score < 60) return 'rgba(255, 184, 0, 1)';
-                if (score < 80) return 'rgba(0, 255, 136, 1)';
+                if (score >= 70) return 'rgba(255, 51, 102, 1)';
+                if (score >= 40) return 'rgba(255, 184, 0, 1)';
+                if (score >= 20) return 'rgba(0, 255, 136, 1)';
                 return 'rgba(60, 219, 192, 1)';
             });
 
@@ -1186,7 +1135,7 @@
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: 'Maturidade por Área (0-100)',
+                        label: 'Necessidade de tecnologia (0-100)',
                         data: data,
                         backgroundColor: backgroundColors,
                         borderColor: borderColors,
@@ -1212,7 +1161,7 @@
                             displayColors: false,
                             callbacks: {
                                 label: function(context) {
-                                    return `Maturidade: ${context.parsed.y}/100`;
+                                    return `Necessidade: ${context.parsed.y}/100`;
                                 }
                             }
                         }
@@ -1262,7 +1211,6 @@
             renderQuestion();
         }
 
-        // Initialize
         renderQuestion();
     </script>
 </body>
