@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAPPS - Diagnóstico Empresarial</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #120037;
+            --accent: #3CDBC0;
+            --accent-glow: rgba(60, 219, 192, 0.4);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --card-bg: rgba(60, 219, 192, 0.05);
+            --card-border: rgba(60, 219, 192, 0.2);
+            --neon-blue: #00D4FF;
+            --neon-cyan: #00FFF0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            background: linear-gradient(135deg, #120037 0%, #1a0052 50%, #0d0028 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Background Animation */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(60, 219, 192, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(0, 255, 240, 0.05) 0%, transparent 50%);
+            animation: bgPulse 15s ease-in-out infinite;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes bgPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--neon-blue), var(--neon-cyan));
+            width: 0%;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 20px var(--accent-glow), 0 0 40px var(--accent-glow);
+        }
+
+        .progress-text {
+            position: fixed;
+            top: 20px;
+            right: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--accent);
+            z-index: 1001;
+            text-shadow: 0 0 10px var(--accent-glow);
+            letter-spacing: 1px;
+        }
+
+        /* Container */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 80px 30px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Logo/Brand */
+        .brand {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .brand h1 {
+            font-size: 48px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .brand p {
+            color: var(--text-secondary);
+            font-size: 16px;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+
+        /* Question Container */
+        .question-container {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .question-container.fade-out {
+            animation: fadeOut 0.4s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .question-number {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .question-text {
+            font-size: 32px;
+            font-weight: 600;
+            line-height: 1.4;
+            margin-bottom: 50px;
+            color: var(--text-primary);
+        }
+
+        /* Options */
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .option {
+            background: var(--card-bg);
+            border: 2px solid var(--card-border);
+            border-radius: 16px;
+            padding: 24px 30px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--accent), var(--neon-blue));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 0;
+        }
+
+        .option-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .option-letter {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(60, 219, 192, 0.1);
+            border: 1px solid var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 18px;
+            color: var(--accent);
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .option-text {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .option:hover {
+            border-color: var(--accent);
+            transform: translateX(10px);
+            box-shadow:
+                0 10px 30px rgba(60, 219, 192, 0.2),
+                0 0 40px rgba(60, 219, 192, 0.1);
+        }
+
+        .option:hover::before {
+            opacity: 0.1;
+        }
+
+        .option:hover .option-letter {
+            background: var(--accent);
+            color: var(--bg-primary);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .option.selected {
+            border-color: var(--accent);
+            background: rgba(60, 219, 192, 0.15);
+            box-shadow:
+                0 10px 40px rgba(60, 219, 192, 0.3),
+                0 0 60px rgba(60, 219, 192, 0.2),
+                inset 0 0 20px rgba(60, 219, 192, 0.1);
+        }
+
+        .option.selected::before {
+            opacity: 0.2;
+        }
+
+        .option.selected .option-letter {
+            background: var(--accent);
+            color: var(--bg-primary);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        /* Navigation Buttons */
+        .navigation {
+            margin-top: 60px;
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .nav-btn {
+            padding: 16px 40px;
+            border: 2px solid var(--accent);
+            background: transparent;
+            color: var(--accent);
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: var(--accent);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+            z-index: 0;
+        }
+
+        .nav-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .nav-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .nav-btn:hover {
+            color: var(--bg-primary);
+            box-shadow: 0 0 30px var(--accent-glow);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            border-color: rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-btn:disabled:hover {
+            box-shadow: none;
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-btn:disabled::before {
+            display: none;
+        }
+
+        .btn-next {
+            margin-left: auto;
+        }
+
+        /* Results Page */
+        .results-container {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .results-header h2 {
+            font-size: 42px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+
+        .results-header p {
+            font-size: 18px;
+            color: var(--text-secondary);
+        }
+
+        .score-display {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px;
+            background: var(--card-bg);
+            border: 2px solid var(--card-border);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .score-number {
+            font-size: 72px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .score-label {
+            font-size: 16px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .answers-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .answer-item {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 24px;
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 0.6s ease-out forwards;
+            animation-delay: calc(var(--item-index) * 0.05s);
+            opacity: 0;
+        }
+
+        .answer-question {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .answer-response {
+            font-size: 18px;
+            color: var(--text-primary);
+        }
+
+        .restart-btn {
+            margin-top: 40px;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--accent), var(--neon-blue));
+            border: none;
+            color: var(--bg-primary);
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 10px 40px rgba(60, 219, 192, 0.3);
+        }
+
+        .restart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 50px rgba(60, 219, 192, 0.5);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 60px 20px;
+            }
+
+            .brand h1 {
+                font-size: 36px;
+            }
+
+            .question-text {
+                font-size: 24px;
+            }
+
+            .option {
+                padding: 20px;
+            }
+
+            .option-text {
+                font-size: 16px;
+            }
+
+            .navigation {
+                flex-direction: column;
+            }
+
+            .btn-next {
+                margin-left: 0;
+            }
+
+            .progress-text {
+                top: 15px;
+                right: 15px;
+                font-size: 12px;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="progress-text" id="progressText">0%</div>
+
+    <div class="container">
+        <!-- Brand -->
+        <div class="brand" id="brand">
+            <h1>FAPPS</h1>
+            <p>Diagnóstico Empresarial Inteligente</p>
+        </div>
+
+        <!-- Question Container -->
+        <div class="question-container" id="questionContainer">
+            <div class="question-number" id="questionNumber">PERGUNTA 1 DE 22</div>
+            <h2 class="question-text" id="questionText"></h2>
+            <div class="options" id="options"></div>
+
+            <div class="navigation">
+                <button class="nav-btn" id="prevBtn" onclick="previousQuestion()" disabled>
+                    <span>← Anterior</span>
+                </button>
+                <button class="nav-btn btn-next" id="nextBtn" onclick="nextQuestion()" disabled>
+                    <span>Próxima →</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Results Container -->
+        <div class="results-container hidden" id="resultsContainer">
+            <div class="results-header">
+                <h2>Resultado do Diagnóstico</h2>
+                <p>Confira suas respostas abaixo</p>
+            </div>
+
+            <div class="score-display">
+                <div class="score-number" id="scoreNumber">0</div>
+                <div class="score-label">Pontuação Total</div>
+            </div>
+
+            <div class="answers-list" id="answersList"></div>
+
+            <button class="restart-btn" onclick="restartForm()">Reiniciar Diagnóstico</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                id: 'p1',
+                text: 'Hoje, quanto do funcionamento da sua empresa depende de você ou de alguém lembrar de fazer as coisas?',
+                options: [
+                    { text: 'Quase tudo', score: 0 },
+                    { text: 'Boa parte', score: 25 },
+                    { text: 'Algumas coisas', score: 50 },
+                    { text: 'Poucas coisas', score: 75 },
+                    { text: 'Quase nada', score: 100 }
+                ]
+            },
+            {
+                id: 'p2',
+                text: 'Quando a demanda aumenta, sua operação aguenta?',
+                options: [
+                    { text: 'Não, vira bagunça', score: 0 },
+                    { text: 'Aguenta pouco', score: 25 },
+                    { text: 'Aguenta, mas com esforço', score: 50 },
+                    { text: 'Aguenta bem', score: 75 },
+                    { text: 'É escalável sem dor', score: 100 }
+                ]
+            },
+            {
+                id: 'p3',
+                text: 'Como você controla tarefas e processos do dia a dia?',
+                options: [
+                    { text: 'WhatsApp e memória da equipe', score: 0 },
+                    { text: 'Mensagens + planilhas', score: 25 },
+                    { text: 'Planilhas organizadas', score: 50 },
+                    { text: 'Ferramenta básica', score: 75 },
+                    { text: 'Sistema com processos claros', score: 100 }
+                ]
+            },
+            {
+                id: 'p4',
+                text: 'Quando algo dá errado, você consegue saber rapidamente o motivo?',
+                options: [
+                    { text: 'Não faço ideia', score: 0 },
+                    { text: 'Às vezes', score: 25 },
+                    { text: 'Sim, mas procurando manualmente', score: 50 },
+                    { text: 'Sim, por sistema', score: 75 },
+                    { text: 'Sim, já recebo alerta automático', score: 100 }
+                ]
+            },
+            {
+                id: 'p5',
+                text: 'Quanto retrabalho existe hoje na empresa?',
+                options: [
+                    { text: 'Muito', score: 0 },
+                    { text: 'Considerável', score: 25 },
+                    { text: 'Médio', score: 50 },
+                    { text: 'Baixo', score: 75 },
+                    { text: 'Quase zero', score: 100 }
+                ]
+            },
+            {
+                id: 'p6',
+                text: 'O quanto do financeiro depende de tarefas manuais?',
+                options: [
+                    { text: 'Quase tudo', score: 0 },
+                    { text: 'Grande parte', score: 25 },
+                    { text: 'Uma parte', score: 50 },
+                    { text: 'Pouco', score: 75 },
+                    { text: 'Praticamente nada', score: 100 }
+                ]
+            },
+            {
+                id: 'p7',
+                text: 'Se alguém pedir seus números financeiros hoje, quanto tempo você leva?',
+                options: [
+                    { text: 'Não tenho esses números', score: 0 },
+                    { text: 'Horas', score: 25 },
+                    { text: '30 minutos', score: 50 },
+                    { text: 'Menos de 10 minutos', score: 75 },
+                    { text: 'Imediato', score: 100 }
+                ]
+            },
+            {
+                id: 'p8',
+                text: 'Qual o nível de risco financeiro que você sente hoje?',
+                options: [
+                    { text: 'Alto', score: 0 },
+                    { text: 'Médio alto', score: 25 },
+                    { text: 'Médio', score: 50 },
+                    { text: 'Baixo', score: 75 },
+                    { text: 'Zero', score: 100 }
+                ]
+            },
+            {
+                id: 'p9',
+                text: 'Como você controla leads, propostas e follow-ups?',
+                options: [
+                    { text: 'WhatsApp', score: 0 },
+                    { text: 'Planilha simples', score: 25 },
+                    { text: 'Ferramenta básica', score: 50 },
+                    { text: 'CRM organizado', score: 75 },
+                    { text: 'CRM + automações', score: 100 }
+                ]
+            },
+            {
+                id: 'p10',
+                text: 'Quantas vendas você perde por falta de acompanhamento?',
+                options: [
+                    { text: 'Muitas', score: 0 },
+                    { text: 'Algumas', score: 25 },
+                    { text: 'Poucas', score: 50 },
+                    { text: 'Quase nenhuma', score: 75 },
+                    { text: 'Nenhuma', score: 100 }
+                ]
+            },
+            {
+                id: 'p11',
+                text: 'Sua equipe comercial sabe exatamente o que fazer todos os dias?',
+                options: [
+                    { text: 'Não', score: 0 },
+                    { text: 'Mais ou menos', score: 25 },
+                    { text: 'Sim, mas sem rotina clara', score: 50 },
+                    { text: 'Sim, com rotina', score: 75 },
+                    { text: 'Sim, com rotina + automações', score: 100 }
+                ]
+            },
+            {
+                id: 'p12',
+                text: 'Quando o cliente chama, como você organiza os atendimentos?',
+                options: [
+                    { text: 'Caos / WhatsApp', score: 0 },
+                    { text: 'WhatsApp com marcação', score: 25 },
+                    { text: 'Planilha ou lista manual', score: 50 },
+                    { text: 'Ferramenta de suporte', score: 75 },
+                    { text: 'Ferramenta + automações', score: 100 }
+                ]
+            },
+            {
+                id: 'p13',
+                text: 'O cliente recebe atualizações automáticas?',
+                options: [
+                    { text: 'Não', score: 0 },
+                    { text: 'Raramente', score: 25 },
+                    { text: 'Às vezes', score: 50 },
+                    { text: 'Frequentemente', score: 75 },
+                    { text: 'Sempre', score: 100 }
+                ]
+            },
+            {
+                id: 'p14',
+                text: 'Quanto tempo por dia sua equipe perde com perguntas repetidas?',
+                options: [
+                    { text: '2h+', score: 0 },
+                    { text: '1h–2h', score: 25 },
+                    { text: '30min–1h', score: 50 },
+                    { text: '10–30min', score: 75 },
+                    { text: 'Quase nada', score: 100 }
+                ]
+            },
+            {
+                id: 'p15',
+                text: 'Como você acompanha as métricas das suas campanhas?',
+                options: [
+                    { text: 'Não acompanho', score: 0 },
+                    { text: 'Só olho o básico', score: 25 },
+                    { text: 'Acompanho manualmente', score: 50 },
+                    { text: 'Dashboard', score: 75 },
+                    { text: 'Dashboard automático', score: 100 }
+                ]
+            },
+            {
+                id: 'p16',
+                text: 'Marketing conversa com Comercial?',
+                options: [
+                    { text: 'Não existe comunicação', score: 0 },
+                    { text: 'Solta', score: 25 },
+                    { text: 'Manual', score: 50 },
+                    { text: 'Integrado', score: 75 },
+                    { text: 'Integrado e automatizado', score: 100 }
+                ]
+            },
+            {
+                id: 'p17',
+                text: 'Quanto do seu marketing é improvisado?',
+                options: [
+                    { text: 'Quase tudo', score: 0 },
+                    { text: 'Boa parte', score: 25 },
+                    { text: 'Às vezes', score: 50 },
+                    { text: 'Pouco', score: 75 },
+                    { text: 'Nada', score: 100 }
+                ]
+            },
+            {
+                id: 'p18',
+                text: 'Como você sabe quem está fazendo o quê na equipe?',
+                options: [
+                    { text: 'Não sei', score: 0 },
+                    { text: 'Perguntando', score: 25 },
+                    { text: 'Planilha', score: 50 },
+                    { text: 'Ferramenta', score: 75 },
+                    { text: 'Ferramenta + indicadores', score: 100 }
+                ]
+            },
+            {
+                id: 'p19',
+                text: 'Como é o onboarding de novos colaboradores?',
+                options: [
+                    { text: 'Totalmente improvisado', score: 0 },
+                    { text: 'Parcialmente improvisado', score: 25 },
+                    { text: 'Manual com checklist', score: 50 },
+                    { text: 'Sistema claro', score: 75 },
+                    { text: 'Sistema + automações', score: 100 }
+                ]
+            },
+            {
+                id: 'p20',
+                text: 'Quando há atraso, você descobre como?',
+                options: [
+                    { text: 'Cliente reclamando', score: 0 },
+                    { text: 'Funcionário avisando', score: 25 },
+                    { text: 'Procurando manualmente', score: 50 },
+                    { text: 'Sistema', score: 75 },
+                    { text: 'Sistema + alertas automáticos', score: 100 }
+                ]
+            },
+            {
+                id: 'p21',
+                text: 'Se a empresa dobrasse de tamanho hoje, ela aguentaria?',
+                options: [
+                    { text: 'Não', score: 0 },
+                    { text: 'Dificilmente', score: 25 },
+                    { text: 'Sim, mas pesado', score: 50 },
+                    { text: 'Sim', score: 75 },
+                    { text: 'Sim, com folga', score: 100 }
+                ]
+            },
+            {
+                id: 'p22',
+                text: 'O que mais impede sua empresa de escalar?',
+                options: [
+                    { text: 'Processos manuais', score: 0 },
+                    { text: 'Falta de organização', score: 25 },
+                    { text: 'Falta de integração', score: 50 },
+                    { text: 'Falta de automação', score: 75 },
+                    { text: 'Nada, só falta aumentar demanda', score: 100 }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let answers = {};
+        const optionLetters = ['A', 'B', 'C', 'D', 'E'];
+
+        function renderQuestion() {
+            const question = questions[currentQuestion];
+
+            document.getElementById('questionNumber').textContent = `PERGUNTA ${currentQuestion + 1} DE ${questions.length}`;
+            document.getElementById('questionText').textContent = question.text;
+
+            const optionsContainer = document.getElementById('options');
+            optionsContainer.innerHTML = '';
+
+            question.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.setAttribute('data-score', option.score);
+                optionDiv.setAttribute('data-option-index', index);
+
+                if (answers[question.id] === option.text) {
+                    optionDiv.classList.add('selected');
+                }
+
+                optionDiv.innerHTML = `
+                    <div class="option-content">
+                        <div class="option-letter">${optionLetters[index]}</div>
+                        <div class="option-text">${option.text}</div>
+                    </div>
+                `;
+
+                optionDiv.addEventListener('click', () => selectOption(option.text, option.score));
+                optionsContainer.appendChild(optionDiv);
+            });
+
+            updateNavigation();
+            updateProgress();
+        }
+
+        function selectOption(optionText, score) {
+            const question = questions[currentQuestion];
+            answers[question.id] = optionText;
+
+            // Remove selected class from all options
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+
+            // Add selected class to clicked option
+            event.currentTarget.classList.add('selected');
+
+            // Enable next button
+            document.getElementById('nextBtn').disabled = false;
+
+            // Auto advance after a short delay (optional)
+            setTimeout(() => {
+                if (currentQuestion < questions.length - 1) {
+                    nextQuestion();
+                }
+            }, 500);
+        }
+
+        function nextQuestion() {
+            if (!answers[questions[currentQuestion].id]) {
+                return;
+            }
+
+            if (currentQuestion < questions.length - 1) {
+                // Fade out
+                const container = document.getElementById('questionContainer');
+                container.classList.add('fade-out');
+
+                setTimeout(() => {
+                    currentQuestion++;
+                    container.classList.remove('fade-out');
+                    renderQuestion();
+                }, 400);
+            } else {
+                showResults();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                const container = document.getElementById('questionContainer');
+                container.classList.add('fade-out');
+
+                setTimeout(() => {
+                    currentQuestion--;
+                    container.classList.remove('fade-out');
+                    renderQuestion();
+                }, 400);
+            }
+        }
+
+        function updateNavigation() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+
+            prevBtn.disabled = currentQuestion === 0;
+            nextBtn.disabled = !answers[questions[currentQuestion].id];
+
+            if (currentQuestion === questions.length - 1 && answers[questions[currentQuestion].id]) {
+                nextBtn.querySelector('span').textContent = 'Ver Resultado →';
+            } else {
+                nextBtn.querySelector('span').textContent = 'Próxima →';
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('progressText').textContent = Math.round(progress) + '%';
+        }
+
+        function showResults() {
+            // Calculate total score
+            let totalScore = 0;
+            questions.forEach(question => {
+                const answer = answers[question.id];
+                const option = question.options.find(opt => opt.text === answer);
+                if (option) {
+                    totalScore += option.score;
+                }
+            });
+
+            // Hide question container
+            document.getElementById('questionContainer').classList.add('hidden');
+            document.getElementById('brand').classList.add('hidden');
+
+            // Show results container
+            const resultsContainer = document.getElementById('resultsContainer');
+            resultsContainer.classList.remove('hidden');
+
+            // Display score
+            document.getElementById('scoreNumber').textContent = totalScore;
+
+            // Display answers
+            const answersList = document.getElementById('answersList');
+            answersList.innerHTML = '';
+
+            questions.forEach((question, index) => {
+                const answerDiv = document.createElement('div');
+                answerDiv.className = 'answer-item';
+                answerDiv.style.setProperty('--item-index', index);
+
+                answerDiv.innerHTML = `
+                    <div class="answer-question">Pergunta ${index + 1}: ${question.text}</div>
+                    <div class="answer-response">${answers[question.id] || 'Não respondida'}</div>
+                `;
+
+                answersList.appendChild(answerDiv);
+            });
+
+            // Update progress to 100%
+            document.getElementById('progressBar').style.width = '100%';
+            document.getElementById('progressText').textContent = '100%';
+
+            // Log JSON to console
+            console.log('Respostas em JSON:', JSON.stringify(answers, null, 2));
+        }
+
+        function restartForm() {
+            currentQuestion = 0;
+            answers = {};
+
+            document.getElementById('resultsContainer').classList.add('hidden');
+            document.getElementById('questionContainer').classList.remove('hidden');
+            document.getElementById('brand').classList.remove('hidden');
+
+            renderQuestion();
+        }
+
+        // Initialize
+        renderQuestion();
+    </script>
+</body>
+</html>
