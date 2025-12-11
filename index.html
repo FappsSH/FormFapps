@@ -6,7 +6,7 @@
     <title>FAPPS - Diagnóstico Empresarial</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
         * {
             margin: 0;
@@ -15,27 +15,26 @@
         }
 
         :root {
-            --bg-primary: #120037;
+            --bg-primary: #0D0033;
+            --bg-secondary: #120037;
             --accent: #3CDBC0;
             --accent-glow: rgba(60, 219, 192, 0.4);
             --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.7);
-            --card-bg: rgba(60, 219, 192, 0.05);
-            --card-border: rgba(60, 219, 192, 0.2);
+            --text-secondary: rgba(255, 255, 255, 0.6);
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(60, 219, 192, 0.15);
             --neon-blue: #00D4FF;
             --neon-cyan: #00FFF0;
-            --critical: #FF3366;
-            --warning: #FFB800;
-            --good: #00FF88;
         }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
-            background: linear-gradient(135deg, #120037 0%, #1a0052 50%, #0d0028 100%);
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
             color: var(--text-primary);
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
+            line-height: 1.6;
         }
 
         body::before {
@@ -46,17 +45,10 @@
             width: 100%;
             height: 100%;
             background:
-                radial-gradient(circle at 20% 50%, rgba(60, 219, 192, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 20%, rgba(0, 255, 240, 0.05) 0%, transparent 50%);
-            animation: bgPulse 15s ease-in-out infinite;
+                radial-gradient(circle at 20% 50%, rgba(60, 219, 192, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 212, 255, 0.06) 0%, transparent 50%);
             z-index: 0;
             pointer-events: none;
-        }
-
-        @keyframes bgPulse {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
         }
 
         .progress-container {
@@ -64,29 +56,27 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 4px;
+            height: 3px;
             background: rgba(255, 255, 255, 0.05);
             z-index: 1000;
-            backdrop-filter: blur(10px);
         }
 
         .progress-bar {
             height: 100%;
-            background: linear-gradient(90deg, var(--accent), var(--neon-blue), var(--neon-cyan));
+            background: linear-gradient(90deg, var(--accent), var(--neon-blue));
             width: 0%;
             transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 0 20px var(--accent-glow), 0 0 40px var(--accent-glow);
+            box-shadow: 0 0 15px var(--accent-glow);
         }
 
         .progress-text {
             position: fixed;
             top: 20px;
             right: 30px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             color: var(--accent);
             z-index: 1001;
-            text-shadow: 0 0 10px var(--accent-glow);
             letter-spacing: 1px;
         }
 
@@ -110,7 +100,7 @@
 
         .brand h1 {
             font-size: 48px;
-            font-weight: 700;
+            font-weight: 800;
             background: linear-gradient(135deg, var(--accent), var(--neon-blue));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -122,8 +112,8 @@
 
         .brand p {
             color: var(--text-secondary);
-            font-size: 16px;
-            font-weight: 300;
+            font-size: 15px;
+            font-weight: 400;
             letter-spacing: 0.5px;
         }
 
@@ -163,17 +153,16 @@
         }
 
         .question-number {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             color: var(--accent);
             margin-bottom: 20px;
             letter-spacing: 2px;
             text-transform: uppercase;
-            text-shadow: 0 0 10px var(--accent-glow);
         }
 
         .question-text {
-            font-size: 32px;
+            font-size: 30px;
             font-weight: 600;
             line-height: 1.4;
             margin-bottom: 50px;
@@ -183,19 +172,19 @@
         .options {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 14px;
         }
 
         .option {
             background: var(--card-bg);
-            border: 2px solid var(--card-border);
-            border-radius: 16px;
-            padding: 24px 30px;
+            border: 1.5px solid var(--card-border);
+            border-radius: 14px;
+            padding: 22px 28px;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
         }
 
         .option::before {
@@ -216,12 +205,12 @@
             z-index: 1;
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 18px;
         }
 
         .option-letter {
-            width: 40px;
-            height: 40px;
+            width: 38px;
+            height: 38px;
             border-radius: 10px;
             background: rgba(60, 219, 192, 0.1);
             border: 1px solid var(--accent);
@@ -229,14 +218,14 @@
             align-items: center;
             justify-content: center;
             font-weight: 600;
-            font-size: 18px;
+            font-size: 16px;
             color: var(--accent);
             flex-shrink: 0;
             transition: all 0.3s ease;
         }
 
         .option-text {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 500;
             color: var(--text-primary);
             transition: all 0.3s ease;
@@ -244,61 +233,55 @@
 
         .option:hover {
             border-color: var(--accent);
-            transform: translateX(10px);
-            box-shadow:
-                0 10px 30px rgba(60, 219, 192, 0.2),
-                0 0 40px rgba(60, 219, 192, 0.1);
+            transform: translateX(8px);
+            box-shadow: 0 8px 25px rgba(60, 219, 192, 0.15);
         }
 
         .option:hover::before {
-            opacity: 0.1;
+            opacity: 0.08;
         }
 
         .option:hover .option-letter {
             background: var(--accent);
             color: var(--bg-primary);
-            box-shadow: 0 0 20px var(--accent-glow);
+            box-shadow: 0 0 15px var(--accent-glow);
         }
 
         .option.selected {
             border-color: var(--accent);
-            background: rgba(60, 219, 192, 0.15);
-            box-shadow:
-                0 10px 40px rgba(60, 219, 192, 0.3),
-                0 0 60px rgba(60, 219, 192, 0.2),
-                inset 0 0 20px rgba(60, 219, 192, 0.1);
+            background: rgba(60, 219, 192, 0.1);
+            box-shadow: 0 8px 30px rgba(60, 219, 192, 0.25);
         }
 
         .option.selected::before {
-            opacity: 0.2;
+            opacity: 0.12;
         }
 
         .option.selected .option-letter {
             background: var(--accent);
             color: var(--bg-primary);
-            box-shadow: 0 0 20px var(--accent-glow);
+            box-shadow: 0 0 15px var(--accent-glow);
         }
 
         .navigation {
-            margin-top: 60px;
+            margin-top: 50px;
             display: flex;
             justify-content: space-between;
-            gap: 20px;
+            gap: 16px;
         }
 
         .nav-btn {
-            padding: 16px 40px;
-            border: 2px solid var(--accent);
+            padding: 15px 36px;
+            border: 1.5px solid var(--accent);
             background: transparent;
             color: var(--accent);
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
-            border-radius: 12px;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
             font-family: 'Inter', sans-serif;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
+            letter-spacing: 0.3px;
             position: relative;
             overflow: hidden;
         }
@@ -313,7 +296,7 @@
             border-radius: 50%;
             background: var(--accent);
             transform: translate(-50%, -50%);
-            transition: width 0.6s ease, height 0.6s ease;
+            transition: width 0.5s ease, height 0.5s ease;
             z-index: 0;
         }
 
@@ -329,11 +312,11 @@
 
         .nav-btn:hover {
             color: var(--bg-primary);
-            box-shadow: 0 0 30px var(--accent-glow);
+            box-shadow: 0 0 25px var(--accent-glow);
         }
 
         .nav-btn:disabled {
-            opacity: 0.3;
+            opacity: 0.25;
             cursor: not-allowed;
             border-color: rgba(255, 255, 255, 0.2);
             color: rgba(255, 255, 255, 0.2);
@@ -352,199 +335,224 @@
             margin-left: auto;
         }
 
+        /* DASHBOARD PREMIUM */
         .results-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 40px 100px;
             opacity: 0;
-            transform: translateY(30px);
             animation: fadeInUp 0.8s ease-out forwards;
-            padding-bottom: 60px;
         }
 
         .results-header {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 60px;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, rgba(60, 219, 192, 0.05), rgba(0, 212, 255, 0.05));
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
         }
 
         .results-header h2 {
-            font-size: 42px;
-            font-weight: 700;
+            font-size: 44px;
+            font-weight: 800;
             background: linear-gradient(135deg, var(--accent), var(--neon-blue));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
         }
 
         .results-header p {
-            font-size: 18px;
+            font-size: 17px;
             color: var(--text-secondary);
+            font-weight: 400;
         }
 
-        .score-display {
-            text-align: center;
-            margin-bottom: 50px;
-            padding: 50px 40px;
+        .score-card {
             background: var(--card-bg);
-            border: 2px solid var(--card-border);
+            border: 1.5px solid var(--card-border);
             border-radius: 20px;
-            backdrop-filter: blur(10px);
+            padding: 50px 40px;
+            margin-bottom: 50px;
+            text-align: center;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            animation: fadeInUp 0.6s ease-out 0.1s both;
+        }
+
+        .score-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 10px var(--accent-glow));
+        }
+
+        .score-label {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            font-weight: 600;
         }
 
         .score-number {
-            font-size: 84px;
-            font-weight: 700;
+            font-size: 80px;
+            font-weight: 800;
             background: linear-gradient(135deg, var(--accent), var(--neon-blue));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 15px;
             line-height: 1;
-        }
-
-        .score-label {
-            font-size: 16px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
         }
 
         .score-classification {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 600;
             color: var(--accent);
-            margin-top: 15px;
         }
 
-        .chart-section {
-            margin-bottom: 50px;
-            padding: 40px;
+        .chart-card {
             background: var(--card-bg);
-            border: 2px solid var(--card-border);
+            border: 1.5px solid var(--card-border);
             border-radius: 20px;
-            backdrop-filter: blur(10px);
+            padding: 40px;
+            margin-bottom: 50px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            animation: fadeInUp 0.6s ease-out 0.2s both;
         }
 
-        .chart-section h3 {
-            font-size: 22px;
-            font-weight: 600;
-            color: var(--accent);
+        .chart-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
             margin-bottom: 30px;
             text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
 
         #areasChart {
-            max-height: 400px;
+            max-height: 380px;
         }
 
         .insights-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 24px;
             margin-bottom: 50px;
         }
 
         .insight-card {
-            padding: 30px;
             background: var(--card-bg);
-            border: 2px solid var(--card-border);
+            border: 1.5px solid var(--card-border);
             border-radius: 16px;
-            backdrop-filter: blur(10px);
-            animation: fadeInUp 0.6s ease-out forwards;
-            opacity: 0;
+            padding: 28px;
+            backdrop-filter: blur(15px);
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.6s ease-out both;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
         }
 
-        .insight-card:nth-child(1) { animation-delay: 0.1s; }
-        .insight-card:nth-child(2) { animation-delay: 0.2s; }
-        .insight-card:nth-child(3) { animation-delay: 0.3s; }
+        .insight-card:nth-child(1) { animation-delay: 0.3s; }
+        .insight-card:nth-child(2) { animation-delay: 0.4s; }
+        .insight-card:nth-child(3) { animation-delay: 0.5s; }
+
+        .insight-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+        }
 
         .insight-card.priority {
-            border-color: var(--critical);
+            border-color: rgba(255, 51, 102, 0.4);
         }
 
         .insight-card.second {
-            border-color: var(--warning);
+            border-color: rgba(255, 184, 0, 0.4);
         }
 
         .insight-card.stable {
-            border-color: var(--good);
+            border-color: rgba(0, 255, 136, 0.4);
+        }
+
+        .insight-icon {
+            font-size: 28px;
+            margin-bottom: 12px;
         }
 
         .insight-title {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .insight-card.priority .insight-title {
-            color: var(--critical);
+            color: #FF3366;
         }
 
         .insight-card.second .insight-title {
-            color: var(--warning);
+            color: #FFB800;
         }
 
         .insight-card.stable .insight-title {
-            color: var(--good);
+            color: #00FF88;
         }
 
         .insight-content {
-            font-size: 16px;
+            font-size: 15px;
             line-height: 1.6;
-            color: var(--text-primary);
+            color: var(--text-secondary);
         }
 
-        .cta-section {
-            padding: 40px;
-            background: linear-gradient(135deg, rgba(60, 219, 192, 0.1), rgba(0, 212, 255, 0.1));
-            border: 2px solid var(--accent);
+        .cta-card {
+            background: linear-gradient(135deg, rgba(60, 219, 192, 0.08), rgba(0, 212, 255, 0.08));
+            border: 1.5px solid var(--accent);
             border-radius: 20px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 40px rgba(60, 219, 192, 0.2);
-            margin-bottom: 40px;
-        }
-
-        .cta-section h3 {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--accent);
-            margin-bottom: 20px;
+            padding: 50px 40px;
             text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 12px 40px rgba(60, 219, 192, 0.15);
+            animation: fadeInUp 0.6s ease-out 0.6s both;
         }
 
         .cta-content {
             font-size: 17px;
             line-height: 1.8;
             color: var(--text-primary);
-            text-align: center;
+            margin-bottom: 35px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        .restart-btn {
-            margin-top: 20px;
-            width: 100%;
-            padding: 20px;
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 18px 48px;
             background: linear-gradient(135deg, var(--accent), var(--neon-blue));
             border: none;
             color: var(--bg-primary);
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             border-radius: 12px;
             cursor: pointer;
+            text-decoration: none;
             text-transform: uppercase;
             letter-spacing: 1px;
             transition: all 0.3s ease;
             font-family: 'Inter', sans-serif;
-            box-shadow: 0 10px 40px rgba(60, 219, 192, 0.3);
+            box-shadow: 0 8px 30px rgba(60, 219, 192, 0.35);
         }
 
-        .restart-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 50px rgba(60, 219, 192, 0.5);
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(60, 219, 192, 0.5);
         }
 
         @media (max-width: 768px) {
@@ -561,7 +569,7 @@
             }
 
             .option {
-                padding: 20px;
+                padding: 18px 22px;
             }
 
             .option-text {
@@ -582,6 +590,10 @@
                 font-size: 12px;
             }
 
+            .results-container {
+                padding: 40px 20px 80px;
+            }
+
             .results-header h2 {
                 font-size: 32px;
             }
@@ -590,8 +602,8 @@
                 font-size: 64px;
             }
 
-            .chart-section, .cta-section {
-                padding: 24px;
+            .chart-card, .cta-card {
+                padding: 28px 20px;
             }
 
             .insights-grid {
@@ -637,25 +649,26 @@
                 <p>Mapa de necessidade de tecnologia na sua empresa</p>
             </div>
 
-            <div class="score-display">
+            <div class="score-card">
+                <div class="score-icon">📊</div>
                 <div class="score-label">Índice Geral</div>
                 <div class="score-number" id="scoreNumber">0</div>
                 <div class="score-classification" id="scoreClassification"></div>
             </div>
 
-            <div class="chart-section">
-                <h3>📊 Necessidade de tecnologia por área (0 a 100)</h3>
+            <div class="chart-card">
+                <h3>Necessidade de Tecnologia por Área (0 a 100)</h3>
                 <canvas id="areasChart"></canvas>
             </div>
 
             <div class="insights-grid" id="insightsGrid"></div>
 
-            <div class="cta-section">
-                <h3>🎯 Próximo Passo</h3>
+            <div class="cta-card">
                 <div class="cta-content" id="ctaContent"></div>
+                <a href="https://wa.me/5569992807419" target="_blank" class="cta-btn">
+                    📞 Agendar Reunião
+                </a>
             </div>
-
-            <button class="restart-btn" onclick="restartForm()">Reiniciar Diagnóstico</button>
         </div>
     </div>
 
@@ -1016,8 +1029,8 @@
             prevBtn.disabled = currentQuestion === 0;
             nextBtn.disabled = !answers[questions[currentQuestion].id];
 
-            if (currentQuestion === questions.length - 1 && answers[questions[currentQuestion].id]) {
-                nextBtn.querySelector('span').textContent = 'Ver Resultado →';
+            if (currentQuestion === 21 && answers[questions[currentQuestion].id]) {
+                nextBtn.querySelector('span').textContent = 'Conferir Resultado →';
             } else {
                 nextBtn.querySelector('span').textContent = 'Próxima →';
             }
@@ -1054,8 +1067,8 @@
         function classificarNecessidade(score) {
             if (score < 20) return "Baixa necessidade de tecnologia";
             if (score < 40) return "Necessidade moderada";
-            if (score < 70) return "Alta necessidade";
-            return "Necessidade crítica";
+            if (score < 70) return "Alta necessidade de tecnologia";
+            return "Necessidade crítica de tecnologia";
         }
 
         function showResults() {
@@ -1082,24 +1095,27 @@
             const insightsGrid = document.getElementById('insightsGrid');
             insightsGrid.innerHTML = `
                 <div class="insight-card priority">
-                    <div class="insight-title">🔴 Prioridade Máxima</div>
-                    <div class="insight-content">${areaMax} – é onde a dependência de processos manuais está mais alta hoje.</div>
+                    <div class="insight-icon">🔴</div>
+                    <div class="insight-title">Prioridade Máxima</div>
+                    <div class="insight-content"><strong>${areaMax}</strong> – A área com maior necessidade de tecnologia. Hoje gera mais perda de tempo e retrabalho.</div>
                 </div>
                 <div class="insight-card second">
-                    <div class="insight-title">🟡 Segunda Prioridade</div>
-                    <div class="insight-content">${areaSecond} – também apresenta alta necessidade de tecnologia e automação.</div>
+                    <div class="insight-icon">🟡</div>
+                    <div class="insight-title">Segunda Prioridade</div>
+                    <div class="insight-content"><strong>${areaSecond}</strong> – Também apresenta alta necessidade de tecnologia e automação para melhorar eficiência.</div>
                 </div>
                 <div class="insight-card stable">
-                    <div class="insight-title">🟢 Área Mais Estável</div>
-                    <div class="insight-content">${areaMin} – hoje é a área com menor necessidade de tecnologia imediata.</div>
+                    <div class="insight-icon">🟢</div>
+                    <div class="insight-title">Área Mais Estável</div>
+                    <div class="insight-content"><strong>${areaMin}</strong> – Hoje é a área com menor necessidade de tecnologia imediata. Funciona relativamente bem.</div>
                 </div>
             `;
 
             const ctaContent = document.getElementById('ctaContent');
             ctaContent.innerHTML = `
-                Seu maior gargalo hoje está em <strong>${areaMax}</strong> (necessidade ${scoreMax}/100).
-                O próximo passo é desenhar um plano de automação focado nessa área para reduzir processos manuais e liberar crescimento.
-                <br><br><strong>Recomendação:</strong> agende uma reunião estratégica para montar esse plano com base no seu diagnóstico.
+                Seu principal gargalo hoje está em <strong>${areaMax}</strong> (necessidade ${scoreMax}/100).
+                <br><br>
+                <strong>Recomendação:</strong> Agende uma reunião estratégica para montar o plano de automação que elimina processos manuais e destrava o crescimento.
             `;
 
             document.getElementById('progressBar').style.width = '100%';
@@ -1107,7 +1123,6 @@
 
             console.log('Necessidade por área:', areaScores);
             console.log('Necessidade geral:', necessidadeGeral);
-            console.log('Classificação:', classificarNecessidade(necessidadeGeral));
         }
 
         function createAreasChart(areaScores) {
@@ -1117,17 +1132,17 @@
             const data = sortedData.map(([, score]) => score);
 
             const backgroundColors = data.map(score => {
-                if (score >= 70) return 'rgba(255, 51, 102, 0.8)';
-                if (score >= 40) return 'rgba(255, 184, 0, 0.8)';
-                if (score >= 20) return 'rgba(0, 255, 136, 0.8)';
-                return 'rgba(60, 219, 192, 0.8)';
+                if (score >= 70) return 'rgba(255, 51, 102, 0.7)';
+                if (score >= 40) return 'rgba(255, 184, 0, 0.7)';
+                if (score >= 20) return 'rgba(60, 219, 192, 0.7)';
+                return 'rgba(0, 255, 136, 0.7)';
             });
 
             const borderColors = data.map(score => {
-                if (score >= 70) return 'rgba(255, 51, 102, 1)';
-                if (score >= 40) return 'rgba(255, 184, 0, 1)';
-                if (score >= 20) return 'rgba(0, 255, 136, 1)';
-                return 'rgba(60, 219, 192, 1)';
+                if (score >= 70) return '#FF3366';
+                if (score >= 40) return '#FFB800';
+                if (score >= 20) return '#3CDBC0';
+                return '#00FF88';
             });
 
             new Chart(ctx, {
@@ -1135,12 +1150,12 @@
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: 'Necessidade de tecnologia (0-100)',
+                        label: 'Necessidade',
                         data: data,
                         backgroundColor: backgroundColors,
                         borderColor: borderColors,
                         borderWidth: 2,
-                        borderRadius: 8,
+                        borderRadius: 10,
                         borderSkipped: false,
                     }]
                 },
@@ -1152,13 +1167,20 @@
                             display: false
                         },
                         tooltip: {
-                            backgroundColor: 'rgba(18, 0, 55, 0.95)',
+                            backgroundColor: 'rgba(13, 0, 51, 0.95)',
                             titleColor: '#3CDBC0',
                             bodyColor: '#ffffff',
                             borderColor: '#3CDBC0',
                             borderWidth: 1,
-                            padding: 12,
+                            padding: 14,
                             displayColors: false,
+                            titleFont: {
+                                size: 14,
+                                weight: '600'
+                            },
+                            bodyFont: {
+                                size: 13
+                            },
                             callbacks: {
                                 label: function(context) {
                                     return `Necessidade: ${context.parsed.y}/100`;
@@ -1171,14 +1193,14 @@
                             beginAtZero: true,
                             max: 100,
                             ticks: {
-                                color: '#ffffff',
+                                color: 'rgba(255, 255, 255, 0.6)',
                                 font: {
-                                    size: 12,
+                                    size: 11,
                                     family: 'Inter'
                                 }
                             },
                             grid: {
-                                color: 'rgba(255, 255, 255, 0.1)',
+                                color: 'rgba(255, 255, 255, 0.06)',
                                 drawBorder: false
                             }
                         },
@@ -1186,7 +1208,7 @@
                             ticks: {
                                 color: '#3CDBC0',
                                 font: {
-                                    size: 12,
+                                    size: 11,
                                     family: 'Inter',
                                     weight: '600'
                                 }
