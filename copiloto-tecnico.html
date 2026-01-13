@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copiloto Técnico - FAPPS | Orientação para Construir com IA</title>
+    <meta name="description" content="Você começou a construir com IA e travou? Orientação técnica para empresários que querem construir com autonomia, mas com respaldo.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0D0033;
+            --bg-secondary: #120037;
+            --accent: #3CDBC0;
+            --accent-glow: rgba(60, 219, 192, 0.4);
+            --accent-secondary: #00D4FF;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(60, 219, 192, 0.15);
+            --red: #ff4d4f;
+            --green: #52c41a;
+            --orange: #fa8c16;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(60, 219, 192, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(0, 212, 255, 0.06) 0%, transparent 50%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .container-narrow {
+            max-width: 900px;
+        }
+
+        /* HEADER */
+        header {
+            padding: 30px 0;
+            position: relative;
+            z-index: 100;
+        }
+
+        .logo-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--bg-primary);
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            padding: 80px 0 120px;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 30px;
+            line-height: 1.4;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .hero-description {
+            font-size: 20px !important;
+            font-weight: 500;
+            color: var(--text-primary) !important;
+            margin-top: 30px;
+            padding: 25px;
+            background: var(--card-bg);
+            border: 1.5px solid var(--card-border);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+        }
+
+        .cta-group {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 20px 40px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            border: none;
+            color: var(--bg-primary);
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 30px var(--accent-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px var(--accent-glow);
+        }
+
+        .btn-secondary {
+            display: inline-block;
+            padding: 18px 40px;
+            background: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(60, 219, 192, 0.1);
+        }
+
+        .hero-checklist {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .hero-checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+            color: var(--text-secondary);
+        }
+
+        .hero-visual {
+            background: var(--card-bg);
+            border: 1.5px solid var(--card-border);
+            border-radius: 20px;
+            padding: 60px 40px;
+            backdrop-filter: blur(15px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+        }
+
+        .hero-visual-content {
+            text-align: center;
+        }
+
+        .hero-visual-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .hero-visual-text {
+            font-size: 18px;
+            color: var(--text-secondary);
+        }
+
+        /* SECTIONS */
+        section {
+            padding: 80px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-title {
+            font-size: 42px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            font-size: 20px;
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 60px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* PROBLEM SECTION */
+        .problem-list {
+            display: grid;
+            gap: 16px;
+            margin: 40px 0;
+        }
+
+        .problem-item {
+            background: var(--card-bg);
+            border: 1.5px solid rgba(255, 77, 79, 0.3);
+            border-radius: 14px;
+            padding: 24px 28px;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .problem-item:hover {
+            border-color: var(--red);
+            transform: translateX(8px);
+        }
+
+        .problem-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .problem-text {
+            font-size: 18px;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .problem-conclusion {
+            margin-top: 40px;
+            padding: 35px;
+            background: rgba(255, 77, 79, 0.08);
+            border: 2px solid rgba(255, 77, 79, 0.3);
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .problem-conclusion p {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+        }
+
+        .problem-conclusion p:last-child {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0;
+        }
+
+        /* SOLUTION SECTION */
+        .solution-how {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin: 50px 0;
+        }
+
+        .solution-step {
+            background: var(--card-bg);
+            border: 1.5px solid var(--card-border);
+            border-radius: 16px;
+            padding: 35px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .solution-step:hover {
+            border-color: var(--accent);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(60, 219, 192, 0.15);
+        }
+
+        .solution-step-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--bg-primary);
+            margin: 0 auto 20px;
+        }
+
+        .solution-step h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
+
+        .solution-step p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .benefits-list {
+            display: grid;
+            gap: 16px;
+            margin: 40px 0;
+        }
+
+        .benefit-item {
+            background: var(--card-bg);
+            border: 1.5px solid var(--card-border);
+            border-radius: 14px;
+            padding: 24px 28px;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .benefit-item:hover {
+            border-color: var(--accent);
+            transform: translateX(8px);
+        }
+
+        .benefit-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .benefit-text {
+            font-size: 18px;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .highlight-box {
+            margin-top: 50px;
+            padding: 40px;
+            background: linear-gradient(135deg, rgba(60, 219, 192, 0.08), rgba(0, 212, 255, 0.08));
+            border: 2px solid var(--accent);
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        .highlight-box p {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.8;
+        }
+
+        /* MECHANISM SECTION */
+        .mechanism-steps {
+            display: grid;
+            gap: 30px;
+            margin: 50px 0;
+        }
+
+        .mechanism-card {
+            background: var(--card-bg);
+            border: 1.5px solid var(--card-border);
+            border-radius: 16px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            gap: 30px;
+            align-items: start;
+            transition: all 0.3s ease;
+        }
+
+        .mechanism-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 8px 30px rgba(60, 219, 192, 0.15);
+        }
+
+        .mechanism-number {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--bg-primary);
+        }
+
+        .mechanism-content h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
+
+        .mechanism-content p {
+            font-size: 17px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* FOR WHO SECTION */
+        .forwho-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .forwho-card {
+            background: var(--card-bg);
+            border: 2px solid;
+            border-radius: 20px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        .forwho-card.positive {
+            border-color: var(--green);
+        }
+
+        .forwho-card.negative {
+            border-color: var(--red);
+        }
+
+        .forwho-card h3 {
+            font-size: 26px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .forwho-card.positive h3 {
+            color: var(--green);
+        }
+
+        .forwho-card.negative h3 {
+            color: var(--red);
+        }
+
+        .forwho-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .forwho-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 17px;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .filter-box {
+            margin-top: 50px;
+            padding: 40px;
+            background: rgba(255, 77, 79, 0.08);
+            border: 2px solid var(--red);
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        .filter-box p {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.8;
+        }
+
+        /* PLANS SECTION */
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .plan-card {
+            background: var(--card-bg);
+            border: 2px solid var(--card-border);
+            border-radius: 20px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+        }
+
+        .plan-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(60, 219, 192, 0.2);
+        }
+
+        .plan-card.featured {
+            border-color: var(--accent);
+            box-shadow: 0 8px 30px rgba(60, 219, 192, 0.15);
+            position: relative;
+        }
+
+        .plan-badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            color: var(--bg-primary);
+            font-size: 12px;
+            font-weight: 700;
+            padding: 6px 20px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .plan-name {
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .plan-price {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+
+        .plan-price span {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .plan-subtitle {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        .plan-features {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 30px;
+            flex-grow: 1;
+        }
+
+        .plan-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 15px;
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        .plan-rules {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+            padding-top: 20px;
+            border-top: 1px solid var(--card-border);
+        }
+
+        .plan-rules p {
+            margin-bottom: 5px;
+        }
+
+        /* FAQ SECTION */
+        .faq-list {
+            display: grid;
+            gap: 20px;
+            margin-top: 50px;
+        }
+
+        .faq-item {
+            background: var(--card-bg);
+            border: 1.5px solid var(--card-border);
+            border-radius: 16px;
+            padding: 35px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: var(--accent);
+        }
+
+        .faq-question {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+
+        .faq-answer {
+            font-size: 17px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* FINAL CTA SECTION */
+        .final-cta {
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .final-cta-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 60px 0;
+        }
+
+        .option-card {
+            background: var(--card-bg);
+            border: 2px solid var(--card-border);
+            border-radius: 20px;
+            padding: 50px 40px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .option-card h3 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .option-card p {
+            font-size: 17px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 12px;
+        }
+
+        .option-card.negative:hover {
+            border-color: rgba(255, 77, 79, 0.5);
+        }
+
+        .option-card.positive {
+            border-color: var(--accent);
+            box-shadow: 0 8px 30px rgba(60, 219, 192, 0.15);
+        }
+
+        .option-card.positive:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(60, 219, 192, 0.25);
+        }
+
+        .final-cta-choice {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 50px 0 40px;
+            color: var(--text-primary);
+        }
+
+        .final-cta-buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .final-cta-buttons .btn-primary {
+            min-width: 500px;
+        }
+
+        .final-microcopy {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .final-microcopy p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 60px 0 40px;
+            border-top: 1px solid var(--card-border);
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 40px;
+        }
+
+        .footer-brand h3 {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .footer-brand p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .footer-links h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 15px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid var(--card-border);
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 968px) {
+            .hero-grid,
+            .solution-how,
+            .forwho-grid,
+            .plans-grid,
+            .final-cta-options {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 38px;
+            }
+
+            .section-title {
+                font-size: 32px;
+            }
+
+            .final-cta-buttons .btn-primary {
+                min-width: auto;
+                width: 100%;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .container {
+                padding: 0 20px;
+            }
+        }
+
+        /* SMOOTH SCROLL */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="container">
+            <div class="logo-header">
+                <div class="logo-icon">F</div>
+                <div class="logo-text">FAPPS</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="inicio">
+        <div class="container">
+            <div class="hero-grid">
+                <div>
+                    <h1>Você começou a construir com IA. Agora travou.</h1>
+                    <h2>E não sabe se o erro é simples ou estrutural.</h2>
+                    <p>Você não precisa de mais um curso de prompts.<br>
+                    Você precisa de <strong>orientação técnica</strong> enquanto constrói.</p>
+
+                    <div class="hero-description">
+                        <strong>Copiloto Técnico da Fapps:</strong><br>
+                        Você constrói sua automação com IA. A gente te diz <strong>o que fazer, onde fazer e como fazer</strong> — sem achismo, sem retrabalho.
+                    </div>
+
+                    <div class="cta-group">
+                        <a href="#planos" class="btn-primary">Quero Orientação Técnica</a>
+                        <a href="#como-funciona" class="btn-secondary">Ver como funciona ↓</a>
+                    </div>
+
+                    <div class="hero-checklist">
+                        <div class="hero-checklist-item">
+                            <span>✓</span>
+                            <span>Não fazemos por você. Orientamos para você fazer.</span>
+                        </div>
+                        <div class="hero-checklist-item">
+                            <span>✓</span>
+                            <span>Sem curiosos. Só para quem vai executar.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-visual">
+                    <div class="hero-visual-content">
+                        <div class="hero-visual-icon">🧭</div>
+                        <div class="hero-visual-text">
+                            <strong>Orientação técnica sob demanda</strong><br>
+                            para quem constrói com IA
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROBLEM SECTION -->
+    <section id="problema">
+        <div class="container container-narrow">
+            <h2 class="section-title">Você já tentou. E travou.</h2>
+            <p class="section-subtitle">
+                Você começou com IA porque viu potencial. Copiou fluxos, testou prompts, até funcionou… no começo.<br>
+                Mas aí o projeto cresceu. Ou deu um erro. Ou você precisou integrar com outra ferramenta.
+            </p>
+
+            <div class="problem-list">
+                <div class="problem-item">
+                    <span class="problem-icon">❌</span>
+                    <span class="problem-text">Se o erro é simples ou se você precisa refazer tudo do zero</span>
+                </div>
+                <div class="problem-item">
+                    <span class="problem-icon">❌</span>
+                    <span class="problem-text">Qual ferramenta usar (porque a internet recomenda 15 diferentes)</span>
+                </div>
+                <div class="problem-item">
+                    <span class="problem-icon">❌</span>
+                    <span class="problem-text">Se está fazendo certo ou criando um "Frankenstein" que vai quebrar depois</span>
+                </div>
+                <div class="problem-item">
+                    <span class="problem-icon">❌</span>
+                    <span class="problem-text">Se vale contratar alguém ou se é algo que você consegue resolver</span>
+                </div>
+            </div>
+
+            <div class="problem-conclusion">
+                <p>O resultado?<br>
+                <strong>Você está gastando créditos, energia e tempo em tentativa e erro.</strong></p>
+                <p>Não é falta de tutorial. É falta de direção.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOLUTION SECTION -->
+    <section id="solucao">
+        <div class="container">
+            <h2 class="section-title">A gente não faz por você.<br>A gente te diz o caminho.</h2>
+            <p class="section-subtitle">
+                O <strong>Copiloto Técnico da Fapps</strong> é orientação técnica sob demanda para empresários que querem construir com autonomia, mas com respaldo.
+            </p>
+
+            <div class="solution-how">
+                <div class="solution-step">
+                    <div class="solution-step-number">1</div>
+                    <h3>Você marca uma sessão</h3>
+                    <p>Mostra onde travou. A gente te diz <strong>exatamente</strong> o que fazer, qual ferramenta usar, como testar.</p>
+                </div>
+                <div class="solution-step">
+                    <div class="solution-step-number">2</div>
+                    <h3>Você executa</h3>
+                    <p>Constrói seguindo o plano, com autonomia — mas sabendo que está no caminho certo.</p>
+                </div>
+                <div class="solution-step">
+                    <div class="solution-step-number">3</div>
+                    <h3>Travou de novo?</h3>
+                    <p>Marca outra sessão. A gente desbloqueia. E você segue.</p>
+                </div>
+            </div>
+
+            <h3 style="font-size: 28px; text-align: center; margin: 60px 0 30px; color: var(--accent);">O que você ganha</h3>
+
+            <div class="benefits-list">
+                <div class="benefit-item">
+                    <span class="benefit-icon">✅</span>
+                    <span class="benefit-text"><strong>Diagnóstico técnico do seu projeto</strong> — onde está o problema, qual a prioridade</span>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">✅</span>
+                    <span class="benefit-text"><strong>Plano de execução claro</strong> — próximos passos, ferramentas, ordem</span>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">✅</span>
+                    <span class="benefit-text"><strong>Orientação sobre prompting</strong> — estrutura, testes, refinamento</span>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">✅</span>
+                    <span class="benefit-text"><strong>Escolha de stack</strong> — quais ferramentas usar (sem achismo)</span>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">✅</span>
+                    <span class="benefit-text"><strong>Debugging orientado</strong> — como identificar e corrigir erros estruturais</span>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">✅</span>
+                    <span class="benefit-text"><strong>Checklist de validação</strong> — como saber se está pronto para escalar</span>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">✅</span>
+                    <span class="benefit-text"><strong>Critérios para delegar</strong> — quando faz sentido a Fapps assumir o projeto</span>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <p>Você não vai aprender "IA".<br>
+                Você vai <strong>avançar no seu projeto real</strong> com orientação técnica de quem já fez.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- MECHANISM SECTION -->
+    <section id="como-funciona">
+        <div class="container container-narrow">
+            <h2 class="section-title">O Sistema Anti-Trava</h2>
+            <p class="section-subtitle">
+                A maioria das pessoas trava em IA porque segue um fluxo sem entender a estrutura.<br>
+                Quando funciona, ótimo. Quando quebra, não sabem por onde começar.
+            </p>
+
+            <div class="mechanism-steps">
+                <div class="mechanism-card">
+                    <div class="mechanism-number">1</div>
+                    <div class="mechanism-content">
+                        <h3>MAPEAMENTO</h3>
+                        <p>A gente identifica <strong>onde você está, onde quer chegar e o que está travando</strong>. Diagnóstico técnico rápido (30–60 min) com mapa visual do fluxo.</p>
+                    </div>
+                </div>
+
+                <div class="mechanism-card">
+                    <div class="mechanism-number">2</div>
+                    <div class="mechanism-content">
+                        <h3>ROTA DE EXECUÇÃO</h3>
+                        <p>Você recebe um <strong>plano de ação claro</strong>, com prioridade, ferramentas e próximos passos. Nada de "tenta isso e vê se funciona". Você sabe o que fazer.</p>
+                    </div>
+                </div>
+
+                <div class="mechanism-card">
+                    <div class="mechanism-number">3</div>
+                    <div class="mechanism-content">
+                        <h3>CHECKPOINT DE VALIDAÇÃO</h3>
+                        <p>Antes de escalar, a gente valida se está estruturado, testado e preparado para crescer. Se estiver, você segue sozinho. Se não, a gente orienta o ajuste.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <p><strong>RESULTADO:</strong><br>
+                Menos frustração. Mais velocidade. Você <strong>entende o que está fazendo</strong>.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOR WHO SECTION -->
+    <section id="para-quem">
+        <div class="container">
+            <h2 class="section-title">Para quem é esse serviço?</h2>
+
+            <div class="forwho-grid">
+                <div class="forwho-card positive">
+                    <h3>✅ Esse serviço é para você se:</h3>
+                    <div class="forwho-list">
+                        <div class="forwho-item">
+                            <span>•</span>
+                            <span>Você já começou a construir algo com IA e travou</span>
+                        </div>
+                        <div class="forwho-item">
+                            <span>•</span>
+                            <span>Você quer autonomia, mas precisa de direção técnica</span>
+                        </div>
+                        <div class="forwho-item">
+                            <span>•</span>
+                            <span>Você valoriza tempo e quer evitar retrabalho</span>
+                        </div>
+                        <div class="forwho-item">
+                            <span>•</span>
+                            <span>Você executa (não fica só estudando)</span>
+                        </div>
+                        <div class="forwho-item">
+                            <span>•</span>
+                            <span>Você quer entender o que está fazendo, não só copiar</span>
+                        </div>
+                        <div class="forwho-item">
+                            <span>•</span>
+                            <span>Você está disposto a investir para avançar com clareza</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="forwho-card negative">
+                    <h3>❌ Esse serviço não é para você se:</h3>
+                    <div class="forwho-list">
+                        <div class="forwho-item">
+                            <span>•</span>
+                            <span>Você quer que alguém faça por você</span>
+                        </div>
+                        <div class="forwho-item">
+                            <span>•</span>
+                            <span>Você não vai executar (só quer "saber como funciona")</span>
+                        </div>
+                        <div class="forwho-item">
+                            <span>•</span>
+                            <span>Você acha que IA resolve tudo sozinha</span>
+                        </div>
+                        <div class="forwho-item">
+                            <span>•</span>
+                            <span>Você não está disposto a seguir orientação técnica</span>
+                        </div>
+                        <div class="forwho-item">
+                            <span>•</span>
+                            <span>Você quer um curso gravado de "aprenda IA em 7 dias"</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-box">
+                <p><strong>Se você não vai executar, não compre.</strong><br>
+                Esse serviço é orientação para ação. Se você quer alguém para fazer, contrate um projeto.<br>
+                Se você quer aprender fazendo com respaldo técnico, entre.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PLANS SECTION -->
+    <section id="planos">
+        <div class="container">
+            <h2 class="section-title">Escolha seu plano de orientação</h2>
+
+            <div class="plans-grid">
+                <!-- PLAN 1: BÁSICO -->
+                <div class="plan-card">
+                    <div class="plan-name">Básico</div>
+                    <div class="plan-price">R$ 1.000<span>/mês</span></div>
+                    <div class="plan-subtitle">5 horas de orientação técnica</div>
+
+                    <div class="plan-features">
+                        <div class="plan-feature">
+                            <span>✅</span>
+                            <span>5h de sessões técnicas por mês</span>
+                        </div>
+                        <div class="plan-feature">
+                            <span>✅</span>
+                            <span>Diagnóstico do projeto</span>
+                        </div>
+                        <div class="plan-feature">
+                            <span>✅</span>
+                            <span>Plano de execução com prioridade</span>
+                        </div>
+                        <div class="plan-feature">
+                            <span>✅</span>
+                            <span>Orientação sobre stack e ferramentas</span>
+                        </div>
+                        <div class="plan-feature">
+                            <span>✅</span>
+                            <span>Debugging técnico</span>
+                        </div>
+                        <div class="plan-feature">
+                            <span>✅</span>
+                            <span>Checklist de validação</span>
+                        </div>
+                    </div>
+
+                    <div class="plan-rules">
+                        <p>• Mínimo 1h por reunião</p>
+                        <p>• Agendamento com 48h de antecedência</p>
+                        <p>• Horas não acumulam</p>
+                    </div>
+
+                    <a href="https://wa.me/5569992807419?text=Quero%20o%20plano%20B%C3%A1sico" class="btn-primary" style="width: 100%;">Começar com Básico</a>
+                </div>
+
+                <!-- PLAN 2: MÉDIO (FEATURED) -->
+                <div class="plan-card featured">
+                    <div class="plan-badge">Mais Escolhido</div>
+                    <div class="plan-name">Médio</div>
+                    <div class="plan-price">R$ 1.800<span>/mês</span></div>
+                    <div class="plan-subtitle">10 horas + WhatsApp</div>
+
+                    <div class="plan-features">
+                        <div class="plan-feature">
+                            <span>✅</span>
+                            <span><strong>10h de sessões técnicas por mês</strong></span>
+                        </div>
+                        <div class="plan-feature">
+                            <span>✅</span>
+                            <span><strong>Tira-dúvidas por WhatsApp</strong></span>
+                        </div>
+                        <div class="plan-feature">
+                            <span>✅</span>
+                            <span>Revisão de fluxos e prompts assíncronos</span>
+                        </div>
+                        <div class="plan-feature">
+                            <span>✅</span>
+                            <span>Prioridade no agendamento</span>
+                        </div>
+                        <div class="plan-feature">
+                            <span>✅</span>
+                            <span>Tudo do plano Básico</span>
+                        </div>
+                    </div>
+
+                    <div class="plan-rules">
+                        <p>• WhatsApp para dúvidas pontuais</p>
+                        <p>• Resposta em até 24h úteis</p>
+                        <p>• Agendamento com 24h de antecedência</p>
+                    </div>
+
+                    <a href="https://wa.me/5569992807419?text=Quero%20o%20plano%20M%C3%A9dio" class="btn-primary" style="width: 100%;">Começar com Médio</a>
+                </div>
+
+                <!-- PLAN 3: AVANÇADO -->
+                <div class="plan-card">
+                    <div class="plan-name">Avançado</div>
+                    <div class="plan-price">R$ 3.000+<span>/mês</span></div>
+                    <div class="plan-subtitle">Orientação estratégica</div>
+
+                    <div class="plan-features">
+                        <div class="plan-feature">
+                            <span>✅</span>
+                            <span>Horas personalizadas (a combinar)</span>
+                        </div>
+                        <div class="plan-feature">
+                            <span>✅</span>
+                            <span>Arquitetura e planejamento estratégico</span>
+                        </div>
+                        <div class="plan-feature">
+                            <span>✅</span>
+                            <span>Acompanhamento contínuo do projeto</span>
+                        </div>
+                        <div class="plan-feature">
+                            <span>✅</span>
+                            <span>Prioridade absoluta</span>
+                        </div>
+                        <div class="plan-feature">
+                            <span>✅</span>
+                            <span>Possibilidade de assumirmos partes críticas</span>
+                        </div>
+                    </div>
+
+                    <div class="plan-rules">
+                        <p>• Para projetos complexos</p>
+                        <p>• Sistemas integrados</p>
+                        <p>• Respaldo técnico contínuo</p>
+                    </div>
+
+                    <a href="https://wa.me/5569992807419?text=Quero%20falar%20sobre%20o%20plano%20Avan%C3%A7ado" class="btn-primary" style="width: 100%;">Falar com Consultor</a>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 50px; font-size: 17px; color: var(--text-secondary);">
+                <p>💬 <strong>Dúvidas sobre qual plano escolher?</strong></p>
+                <p style="margin-top: 10px;"><a href="https://wa.me/5569992807419?text=Tenho%20d%C3%BAvidas%20sobre%20os%20planos" style="color: var(--accent); text-decoration: none;">Agendar call rápida de 15 min (sem compromisso)</a></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section id="faq">
+        <div class="container container-narrow">
+            <h2 class="section-title">Perguntas frequentes</h2>
+
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question">Mas eu queria que vocês fizessem por mim. Por que vocês não fazem?</div>
+                    <div class="faq-answer">Porque você ganha mais fazendo com orientação do que delegando cegamente. Quando você constrói, você <strong>entende</strong> a estrutura. Se algo quebrar depois, você sabe onde está o problema. Se você delegar sem entender, você fica <strong>refém</strong>. Agora, se depois de construir você quiser delegar a finalização, a gente oferece essa opção.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">E se eu não tiver tempo para executar?</div>
+                    <div class="faq-answer">Orientação técnica <strong>reduz</strong> o tempo de execução. Tentativa e erro é o que consome tempo. Seguir um plano claro é rápido. Se mesmo assim você não tiver tempo, contrate um Projeto Fechado. Mas saiba que você não vai aprender a estrutura.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">E se eu não souber executar o que vocês orientam?</div>
+                    <div class="faq-answer">A orientação é <strong>passo a passo</strong>. A gente não te manda fazer algo sem explicar como. Se você travar, a gente ajusta o plano. O mínimo que esperamos: você sabe usar um computador, sabe acessar ferramentas online, e está disposto a seguir instruções.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Isso é só consultoria? Ou vocês entregam algo concreto?</div>
+                    <div class="faq-answer">Você recebe entregáveis em toda sessão: mapa visual do fluxo, plano de ação com prioridades, checklist de validação, frameworks de prompts, critérios de escolha de ferramentas. Não é "consultoria de ideias". É orientação técnica para execução.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Posso mandar dúvida no WhatsApp o dia todo?</div>
+                    <div class="faq-answer">Se você tem plano Médio ou Avançado, sim — mas com bom senso. WhatsApp é para <strong>dúvidas pontuais</strong> ("qual ferramenta usar para X?", "esse erro é simples ou estrutural?"). Não é para <strong>execução</strong> ("configura isso pra mim"). Se a dúvida precisa de mais de 10 minutos de atenção, é melhor agendar uma sessão.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Isso vale mais que contratar um dev?</div>
+                    <div class="faq-answer">Depende do seu objetivo. Se você quer <strong>aprender a estrutura e ter autonomia</strong>, sim. Se você quer <strong>delegar e esquecer</strong>, não. O Copiloto Técnico é para quem quer <strong>construir com respaldo</strong>, não para quem quer só comprar uma solução pronta.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">E se eu travar de novo depois que as horas acabarem?</div>
+                    <div class="faq-answer">Renova o plano ou compra horas avulsas. Planos são mensais. Se você resolver tudo em 3 meses e não precisar mais, cancela. Se precisar de suporte pontual depois, compra horas avulsas (R$ 250/h).</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Quanto tempo leva para ver resultado?</div>
+                    <div class="faq-answer">Depende do estado do seu projeto. Se você já tem a base e travou em algo pontual: 1 sessão pode destravar. Se você está começando do zero: de 2 a 4 sessões para ter a estrutura funcionando.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FINAL CTA SECTION -->
+    <section class="final-cta">
+        <div class="container container-narrow">
+            <h2 class="section-title">Se você chegou até aqui,<br>você tem duas opções.</h2>
+
+            <div class="final-cta-options">
+                <div class="option-card negative">
+                    <h3>OPÇÃO 1: Você continua tentando sozinho.</h3>
+                    <p>Você volta para o YouTube, copia mais um fluxo, torce para funcionar.</p>
+                    <p>Se der certo, ótimo.</p>
+                    <p>Se quebrar de novo, você vai estar no mesmo lugar (ou mais frustrado).</p>
+                </div>
+
+                <div class="option-card positive">
+                    <h3>OPÇÃO 2: Você contrata orientação técnica.</h3>
+                    <p>Você marca a primeira sessão, mostra onde travou, recebe um plano claro e executa com respaldo.</p>
+                    <p><strong>Menos frustração. Mais velocidade.</strong></p>
+                    <p>Você <strong>entende</strong> o que está fazendo.</p>
+                </div>
+            </div>
+
+            <div class="final-cta-choice">A ESCOLHA É SUA.</div>
+
+            <p style="font-size: 18px; color: var(--text-secondary); text-align: center; margin-bottom: 40px;">
+                Se você é do tipo que executa e valoriza tempo, clica abaixo e agenda a primeira sessão.<br>
+                Se você ainda acha que "vai dar para resolver sozinho", sem problemas. Volta quando travar de novo.
+            </p>
+
+            <div class="final-cta-buttons">
+                <a href="https://wa.me/5569992807419?text=Quero%20agendar%20a%20primeira%20sess%C3%A3o" class="btn-primary">
+                    Quero Orientação Técnica — Agendar Primeira Sessão
+                </a>
+                <a href="https://wa.me/5569992807419?text=Ainda%20tenho%20d%C3%BAvidas" class="btn-secondary">
+                    Ainda tenho dúvidas — Falar com Consultor
+                </a>
+            </div>
+
+            <div class="final-microcopy">
+                <p><span>🔒</span> Sem compromisso de longo prazo. Cancela quando quiser.</p>
+                <p><span>✅</span> Garantia: Se na primeira sessão você achar que não vale, a gente devolve o valor e você fica com o diagnóstico.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>FAPPS</h3>
+                    <p>Software House especializada em orientação técnica para empresários que constroem com IA.</p>
+                    <p style="margin-top: 20px;">
+                        📞 WhatsApp: <a href="https://wa.me/5569992807419" style="color: var(--accent); text-decoration: none;">(69) 99280-7419</a>
+                    </p>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Links Rápidos</h4>
+                    <ul>
+                        <li><a href="#inicio">Início</a></li>
+                        <li><a href="#como-funciona">Como Funciona</a></li>
+                        <li><a href="#planos">Planos</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Serviços</h4>
+                    <ul>
+                        <li><a href="#planos">Copiloto Técnico</a></li>
+                        <li><a href="https://wa.me/5569992807419?text=Quero%20saber%20sobre%20Projetos%20Fechados">Projetos Fechados</a></li>
+                        <li><a href="https://wa.me/5569992807419?text=Quero%20saber%20sobre%20Elementos%20Prontos">Elementos Prontos</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2025 FAPPS. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll para links âncora
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Fade in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
